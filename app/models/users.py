@@ -1,9 +1,9 @@
+from datetime import datetime, timezone
+from typing import Optional
+import uuid
 from sqlalchemy import String, Boolean, DateTime
 from sqlalchemy.orm import Mapped, mapped_column, relationship
-from typing import Optional
 from sqlalchemy.dialects.postgresql import UUID
-import uuid
-from datetime import datetime, timezone
 
 from app.db.base import Base
 

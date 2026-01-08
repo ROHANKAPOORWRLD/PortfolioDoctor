@@ -1,4 +1,6 @@
 from fastapi import APIRouter, HTTPException, status, Depends
+from sqlalchemy.orm import Session
+
 from app.schemas.auth import (
     TokenResponse,
     LoginRequest,
@@ -6,7 +8,6 @@ from app.schemas.auth import (
     RegisterResponse,
 )
 from app.db.session import get_db
-from sqlalchemy.orm import Session
 from app.api.v1.dependency import get_auth_service
 from app.exception.exceptions import UserAlreadyExists
 
@@ -25,7 +26,9 @@ def login_user(user: LoginRequest, db: Session = Depends(get_db)):
             )
         return {"access_token": "", "token_type": ""}
     except Exception as e:
-        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=e)
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=e
+        ) from e
 
 
 @local_router.post("/register", response_model=RegisterResponse)
@@ -39,6 +42,10 @@ def register_user(user: RegisterRequest, db: Session = Depends(get_db)):
             created_at=new_user.created_at,
         )
     except UserAlreadyExists as error:
-        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail=error)
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT, detail=error
+        ) from error
     except Exception as e:
-        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=e)
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=e
+        ) from e
