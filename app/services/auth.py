@@ -25,11 +25,18 @@ class AuthService:
         return user
 
     def register_user(self, db: Session, email: str, password: str) -> User:
-        print(type(password))
-        print(password)
-        print(len(password))
         if self.auth_repo.user_email_exists(db, email):
             raise UserAlreadyExists("Bruh!")
-
         hashed_password = hash_password(password)
         return self.auth_repo.create_user(db, email, hashed_password)
+
+    def register_user_by_identity(
+        self, db: Session, email: str, google_id: str
+    ) -> User:
+        user = self.auth_repo.google_id_exists(db, google_id)
+        if user:
+            return user
+        user = self.auth_repo.user_email_exists(db, email)
+        if user:
+            return self.auth_repo.add_google_id(db, user, google_id)
+        return self.auth_repo.create_user(db, email, google_id)

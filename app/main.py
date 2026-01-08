@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-
+from starlette.middleware.sessions import SessionMiddleware
 from app.db.base import Base
 from app.db.session import engine
 from app.api.v1.api import api_router
@@ -7,6 +7,8 @@ from app.api.v1.api import api_router
 app = FastAPI()
 
 app.include_router(router=api_router)
+
+app.add_middleware(SessionMiddleware, secret_key="rohan_kapoor")
 
 
 @app.get("/", tags=["Welcome"])
