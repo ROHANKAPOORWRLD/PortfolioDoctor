@@ -1,7 +1,7 @@
 from app.services.auth import AuthService
 from app.repository.auth import AuthRepository
 
-from app.services.portfolio import PortflioService
+from app.services.portfolio import PortfolioService
 from app.repository.portfolio import PortfolioRepository
 
 
@@ -12,4 +12,4 @@ def get_auth_service():
 
 def get_portfolio_service():
     portfolio_repo = PortfolioRepository()
-    return PortflioService(portfolio_repo)
+    return PortfolioService(portfolio_repo)
