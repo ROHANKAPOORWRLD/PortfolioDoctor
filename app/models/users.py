@@ -37,7 +37,8 @@ class User(Base):
     google_id: Mapped[Optional[str]] = mapped_column(
         String,
         nullable=True,
-    )
+        unique=True
+        )
 
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True),

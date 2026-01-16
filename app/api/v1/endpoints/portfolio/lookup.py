@@ -1,6 +1,6 @@
 from fastapi import APIRouter, HTTPException, status
 
-from app.schemas.portfolio import ShareRequest, ShareResponse
+from app.schemas.portfolio import ShareResponse
 from app.services.share import fetch_share_price
 
 lookup_router = APIRouter()
@@ -10,8 +10,8 @@ lookup_router = APIRouter()
 async def get_stock_price(symbol: str):
     try:
         return fetch_share_price(symbol)
-    except:
+    except Exception as e:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="Symbol not found. Please try again later",
-        )
+        ) from e

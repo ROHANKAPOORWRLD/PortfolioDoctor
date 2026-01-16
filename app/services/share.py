@@ -6,18 +6,11 @@ def fetch_share_price(symbol: str):
 
     ticker = Ticker(f"{symbol}.NS")
 
-    price = None
-    name = None
-    try:
-        info = ticker.info
-        price = info.get("regularMarketPrice")
-        name = info.get("longName") or info.get("shortName")
-    except:
-        pass
+    info = ticker.info
+    price = info.get("regularMarketPrice")
+    name = info.get("longName") or info.get("shortName")
 
     if not price:
         raise ValueError(f"Price not available for symbol {symbol}")
 
-    response = {"name": name, "price": price}
-    print(response)
     return {"name": name, "symbol": symbol, "price": price}
